@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mechaton — Konkurs Naukowy Wydziału Mechanicznego Politechniki Łódzkiej</title>
+<meta name="description" content="Mechaton — 48-godzinny konkurs inżynierski Wydziału Mechanicznego Politechniki Łódzkiej. Zespoły studentów rozwiązują realne problemy postawione przez partnerów z przemysłu: HITACHI, COMMON, SECO/WARWICK, VEOLIA.">
+<link rel="icon" type="image/jpeg" href="./media/favicon-mechaton.jpg">
+<link rel="preload" href="./fonts/plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="./styles.css">
+<script src="./stan.js" defer></script>
+<script src="./dane/edycje.js" defer></script>
+<script src="./js/rdzen.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#tresc">Przejdź do treści</a>
+
+<header class="site-header">
+  <p class="statusbar" data-stan-statusbar hidden></p>
+  <div class="container masthead">
+    <a class="brand" href="./index.html">
+      <img src="./media/logo-mechaton.png" alt="" width="56" height="56">
+      <span class="brand-name">MECHATON</span>
+    </a>
+    <nav class="site-nav" aria-label="Nawigacja główna">
+      <ul>
+        <li><a href="./index.html" aria-current="page">Start</a></li>
+        <li><a href="./edycje/index.html">Edycje</a></li>
+        <li><a href="./wspolpraca.html">Współpraca</a></li>
+        <li><a href="./regulaminy.html">Regulaminy</a></li>
+        <li><a href="./inni-o-nas.html">Inni o nas</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="tresc" tabindex="-1">
+  <div class="container">
+
+    <!-- ═══ HERO — 4 fazy; bez JS widoczna jest faza "post" ═══ -->
+
+    <section class="hero" data-faza="post" aria-labelledby="hero-post-tytul">
+      <span class="etykieta">Konkurs Naukowy · Wydział Mechaniczny Politechniki Łódzkiej</span>
+      <h1 id="hero-post-tytul">48 godzin inżynierii na realnym zadaniu</h1>
+      <p class="lede">W Mechatonie zespoły studentów projektują rozwiązanie problemu postawionego
+      przez firmę z przemysłu. Cztery zakończone edycje, czterej partnerzy — od VEOLII po HITACHI.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-solid" href="./edycje/index.html">Wyniki i archiwum edycji</a>
+        <a class="btn btn-outline" href="./wspolpraca.html">Zostań partnerem konkursu</a>
+      </div>
+      <p class="hero-note">Organizator: Wydział Mechaniczny Politechniki Łódzkiej.</p>
+    </section>
+
+    <section class="hero" data-faza="ogloszenie" hidden aria-labelledby="hero-ogl-tytul">
+      <span class="etykieta">Ogłoszenie · Wydział Mechaniczny Politechniki Łódzkiej</span>
+      <h1 id="hero-ogl-tytul"><span data-slot="numer">V</span>. Mechaton × <span data-slot="firma">[firma]</span></h1>
+      <p class="lede"><span data-slot="tematy"></span></p>
+      <p><strong>Kiedy:</strong> <span data-slot="datyTekst"></span>
+        <span class="licznik" data-licznik="start" hidden></span><br>
+        <strong>Zapisy startują:</strong> <span data-slot="zapisyOdTekst"></span></p>
+      <div class="hero-ctas">
+        <a class="btn btn-outline" href="./regulaminy.html">Przeczytaj zasady</a>
+      </div>
+      <p class="hero-note">Zgłoszenia zespołów (2–5 osób) przyjmujemy przez formularz —
+      link pojawi się tutaj w dniu startu zapisów.</p>
+    </section>
+
+    <section class="hero" data-faza="zapisy" hidden aria-labelledby="hero-zap-tytul">
+      <span class="etykieta">Zapisy otwarte · Wydział Mechaniczny Politechniki Łódzkiej</span>
+      <h1 id="hero-zap-tytul">Zapisy na <span data-slot="numer">V</span>. Mechaton × <span data-slot="firma">[firma]</span> są otwarte</h1>
+      <p class="lede"><span data-slot="tematy"></span></p>
+      <p><strong>Kiedy:</strong> <span data-slot="datyTekst"></span>
+        <span class="licznik" data-licznik="koniec" hidden></span><br>
+        <strong>Zgłoszenia przyjmujemy do:</strong> <span data-slot="zapisyDoTekst"></span></p>
+      <div class="hero-ctas">
+        <a class="btn btn-solid" data-slot-link="linkFormularza" href="">Zgłoś zespół</a>
+        <a class="btn btn-outline" href="./regulaminy.html">Przeczytaj zasady</a>
+      </div>
+      <p class="hero-note">Zespół liczy od 2 do 5 osób. Startują pełnoletni studenci
+      Wydziału Mechanicznego PŁ — szczegóły w regulaminie.</p>
+    </section>
+
+    <section class="hero" data-faza="trwa" hidden aria-labelledby="hero-trwa-tytul">
+      <span class="etykieta">Na żywo · Wydział Mechaniczny Politechniki Łódzkiej</span>
+      <h1 id="hero-trwa-tytul"><span data-slot="numer">V</span>. Mechaton × <span data-slot="firma">[firma]</span> trwa</h1>
+      <p class="lede">Konkurs rozpoczął się. Przez najbliższe 48 godzin — także w nocy poza
+      kampusem — zespoły pracują nad rozwiązaniem zadania:</p>
+      <p class="zadanie"><span class="etykieta zadanie-etykieta">Zadanie konkursowe</span><span data-slot="tematy"></span></p>
+      <p><strong>Terminy:</strong> <span data-slot="datyTekst"></span> · prezentacje rozwiązań
+      następują po upływie 48 godzin.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-outline" data-slot-link="linkStronyEdycji" href="./edycje/index.html">Strona edycji</a>
+        <a class="btn btn-outline" href="mailto:mechaton@info.p.lodz.pl">Kontakt do organizatorów</a>
+      </div>
+      <p class="hero-note">Wyniki, zdjęcia i podsumowanie pojawią się na tej stronie po zakończeniu konkursu.</p>
+    </section>
+
+    <!-- ═══ CZYM JEST ═══ -->
+    <section aria-labelledby="czym-tytul">
+      <div class="section-head">
+        <span class="etykieta">01 · O konkursie</span>
+        <h2 id="czym-tytul">Czym jest Mechaton</h2>
+      </div>
+      <div class="prose">
+        <p>Mechaton to mechaniczny kuzyn hackathonu: 48-godzinny konkurs naukowy organizowany
+        przez Wydział Mechaniczny Politechniki Łódzkiej. Firma partner przekazuje zadanie —
+        realny problem z jej przemysłu — a zespoły studentów pracują nad rozwiązaniem
+        w ciągłym trybie, po czym prezentują je przed jury.</p>
+        <p>Oceny dokonuje jury złożone z wykładowców, studentów i przedstawiciela firmy.
+        Liczy się innowacyjność (30%), utylitarność (30%), planowana trwałość rozwiązania
+        (20%) i prezentacja końcowa (20%). Decyzje jury są ostateczne, a w jego skład
+        zawsze wchodzi przedstawiciel firmy partnera — to oni najlepiej znają kontekst zadania.</p>
+      </div>
+      <div class="fakty">
+        <div class="fakta"><div class="fakta-liczba">48 h</div><div class="fakta-etykieta">Czas na rozwiązanie</div></div>
+        <div class="fakta"><div class="fakta-liczba">2–5</div><div class="fakta-etykieta">Osób w zespole</div></div>
+        <div class="fakta"><div class="fakta-liczba">10 min</div><div class="fakta-etykieta">Prezentacja przed jury</div></div>
+        <div class="fakta"><div class="fakta-liczba">4</div><div class="fakta-etykieta">Zakończone edycje</div></div>
+      </div>
+    </section>
+
+    <!-- ═══ DLACZEGO WARTO ═══ -->
+    <section aria-labelledby="dlaczego-tytul">
+      <div class="section-head">
+        <span class="etykieta">02 · Dla studentów</span>
+        <h2 id="dlaczego-tytul">Dlaczego warto wziąć udział</h2>
+      </div>
+      <ul class="spec-list">
+        <li>
+          <span class="spec-num" aria-hidden="true">01</span>
+          <div>
+            <h3>Praktyka zamiast teorii</h3>
+            <p>Zastosujesz wiedzę z wykładów do konkretnego problemu przemysłowego —
+            pod okiem mentorów i inżynierów firmy, która postawiła zadanie.</p>
+          </div>
+        </li>
+        <li>
+          <span class="spec-num" aria-hidden="true">02</span>
+          <div>
+            <h3>Kontakty, które zostają</h3>
+            <p>Poznas ludzi z przemysłu, potencjalnych pracodawców i studentów innych
+            kierunków. Zwycięzcy poprzednich edycji trafiali na staże i praktyki u partnerów.</p>
+          </div>
+        </li>
+        <li>
+          <span class="spec-num" aria-hidden="true">03</span>
+          <div>
+            <h3>Nagrody i suplement do dyplomu</h3>
+            <p>Nagrody rzeczowe i finansowe od partnera, a laureaci mogą wpisać Mechaton
+            do suplementu dyplomu jako dodatkowe osiągnięcie.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ═══ OSTATNIA EDYCJA (tylko faza post; zasila dane/edycje.js) ═══ -->
+    <section data-faza="post" aria-labelledby="ostatnia-tytul">
+      <div class="section-head">
+        <span class="etykieta">03 · Ostatnia edycja</span>
+        <h2 id="ostatnia-tytul">Tak wyglądał ostatni Mechaton</h2>
+      </div>
+      <div data-manifest-ostatnia>
+        <p class="etykieta" data-o-etykieta>ED-04</p>
+        <h3 style="font-size:var(--step-2)" data-o-tytul>IV. Mechaton × HITACHI</h3>
+        <p class="edycja-meta" data-o-daty>19–21 listopada 2025</p>
+        <p class="zadanie"><span class="etykieta zadanie-etykieta">Zadanie konkursowe</span><span data-o-temat>Zbiornik transformatora wymyślony na nowo</span></p>
+        <div class="staty">
+          <div class="fakta"><div class="stat-liczba" data-o-zespolow>16</div><div class="stat-etykieta">Zespołów</div></div>
+          <div class="fakta"><div class="stat-liczba" data-o-uczestnikow>75</div><div class="stat-etykieta">Uczestników</div></div>
+        </div>
+        <p><a class="btn btn-solid" data-o-link href="./edycje/ED-04.html">Pełne wyniki edycji</a></p>
+      </div>
+    </section>
+
+    <!-- ═══ HISTORIA (wszystkie fazy; zasila dane/edycje.js) ═══ -->
+    <section aria-labelledby="historia-tytul">
+      <div class="section-head">
+        <span class="etykieta">04 · Rejestr</span>
+        <h2 id="historia-tytul">Historia edycji</h2>
+      </div>
+      <div class="tabela-przewijanie">
+      <table class="historia">
+        <caption>Każda edycja — inna firma, inne zadanie</caption>
+        <thead>
+          <tr><th scope="col">Edycja</th><th scope="col">Partner</th><th scope="col">Zadanie konkursowe</th></tr>
+        </thead>
+        <tbody data-manifest-historia>
+          <tr><td>ED-04 · 2025</td><td><a href="./edycje/ED-04.html">HITACHI</a></td><td>Zbiornik transformatora wymyślony na nowo</td></tr>
+          <tr><td>ED-03 · 2024</td><td><a href="./edycje/ED-03.html">COMMON S.A.</a></td><td>Projekt 3D zespołu smarowania gazomierza turbinowego CGT-02</td></tr>
+          <tr><td>ED-02 · 2023</td><td><a href="./edycje/ED-02.html">SECO/WARWICK</a></td><td>Koncepcja napędu pionowego dwukomorowego pieca próżniowego CMe 9912 z wanną olejową</td></tr>
+          <tr><td>ED-01 · 2023</td><td><a href="./edycje/ED-01.html">VEOLIA</a></td><td>Projekt odzysku ciepła z zakładu przemysłowego do sieci wysokoparametrowej DN800</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="stopka-grid">
+      <div>
+        <h2>Mechaton</h2>
+        <p style="max-width:34ch; color:var(--fg-soft)">Konkurs inżynierski Wydziału
+        Mechanicznego Politechniki Łódzkiej.</p>
+        <div class="stopka-loga">
+          <a href="https://p.lodz.pl/"><img loading="lazy" src="./media/img/logo-plozdzk.jpg" alt="Politechnika Łódzka" width="70" height="70"></a>
+          <a href="https://mechaniczny.p.lodz.pl/"><img loading="lazy" src="./media/img/logo-wydzial-mechaniczny.png" alt="Wydział Mechaniczny PŁ" width="112" height="112"></a>
+        </div>
+      </div>
+      <div class="kontakt-blok">
+        <h2>Kontakt</h2>
+        <ul>
+          <li><a href="mailto:mechaton@info.p.lodz.pl">mechaton@info.p.lodz.pl</a></li>
+          <li class="adres"><b>Budynek A18 „Fabryka Inżynierów”</b><br>
+          Politechnika Łódzka, Wydział Mechaniczny<br>
+          ul. Stefanowskiego 1/15, 90-537 Łódź</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Przydatne linki</h2>
+        <ul>
+          <li><a href="https://mechaniczny.p.lodz.pl/">Wydział Mechaniczny PŁ</a></li>
+          <li><a href="https://mechaniczny.p.lodz.pl/wydzial/mechatony-na-wydziale">Mechatony na wydziale — ogłoszenia</a></li>
+          <li><a href="https://www.facebook.com/WydzialMechanicznyPL">Facebook Wydziału Mechanicznego</a></li>
+          <li><a href="https://www.instagram.com/wrsmechaniczny/">Instagram WrS Mechaniczny</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Nawigacja</h2>
+        <ul>
+          <li><a href="./edycje/index.html">Edycje</a></li>
+          <li><a href="./wspolpraca.html">Współpraca</a></li>
+          <li><a href="./regulaminy.html">Regulaminy</a></li>
+          <li><a href="./inni-o-nas.html">Inni o nas</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copyright">© MECHATON · Wydział Mechaniczny Politechniki Łódzkiej</p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,430 @@
+/* ============================================================
+   MECHATON — arkusz stylów
+   Źródło prawdy: DESIGN.md (tokeny poniżej). Zakaz surowych hex
+   poza tym blokiem (llm-pitfalls: hardcoded colors).
+   Kierunek: „inżynierski editorial" — papier, tusz, bordo,
+   hairline'y 1px zamiast cieni, mono-etykiety.
+   ============================================================ */
+
+:root {
+  /* paleta (DESIGN.md §Tokens) */
+  --bg: #faf8f6;
+  --bg-sunk: #f1ece7;        /* zatopione pola: karty kodu, tablice */
+  --fg: #171214;
+  --fg-soft: #453c3f;        /* tekst wtórny wzmocniony (kontrast >7:1) */
+  --accent: #630102;         /* bordo — jedyny akcent tożsamości */
+  --accent-strong: #4c0102;  /* hover linków/przycisków */
+  --muted: #6e645e;          /* metadane, podpisy */
+  --line: #ddd5cf;           /* hairline */
+  --line-strong: #c9beb6;
+  --gold: #8a6d1d;
+  --silver: #666061;
+  --bronze: #8a5636;
+
+  /* typografia — skala modularna 1.25 (DESIGN.md §Type) */
+  --step--1: 0.8125rem;   /* 13px — mono-etykiety, metadane */
+  --step-0: 1rem;         /* 16px — body */
+  --step-lf: 1.0625rem;   /* 17px — long-form */
+  --step-1: 1.25rem;      /* 20px — lede */
+  --step-2: 1.5625rem;    /* 25px — h2 */
+  --step-3: 1.9531rem;    /* 31px — h1 podstron */
+  --step-4: 2.4414rem;    /* 39px — display hero */
+
+  --font-sans: "IBM Plex Sans", "Plex Sans", Arial, "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, "Courier New", monospace;
+
+  --radius: 3px;
+  --measure: 66ch;         /* szerokość rodnika tekstu; weryfikacja CPL w VERIFY */
+  --header-h: 4.5rem;
+}
+
+/* ---------- reset bazowy ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--step-lf);
+  line-height: 1.5;
+  font-synthesis-weight: none;
+}
+img { max-width: 100%; height: auto; display: block; }
+h1, h2, h3 {
+  font-weight: 600;
+  line-height: 1.15;
+  text-wrap: balance;
+  margin: 0 0 0.5em;
+  letter-spacing: -0.01em;
+}
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-2); }
+h3 { font-size: var(--step-1); }
+p { margin: 0 0 1em; }
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  /* długie URL-e (np. w tekście regulaminów) łamią się zamiast rozpychać stronę */
+  overflow-wrap: anywhere;
+}
+a:hover { color: var(--accent-strong); }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%); overflow: hidden; white-space: nowrap;
+}
+.skip-link {
+  position: absolute; left: 1rem; top: -3rem; z-index: 100;
+  background: var(--bg); border: 1px solid var(--line-strong);
+  padding: 0.5rem 0.9rem; border-radius: var(--radius);
+  transition: top 120ms ease;
+}
+.skip-link:focus { top: 0.5rem; }
+
+/* ---------- etykiety mono (spec-sheet) ---------- */
+.etykieta {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ---------- layout ---------- */
+.container {
+  max-width: 74rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+.prose { max-width: var(--measure); }
+main { padding-bottom: 4rem; }
+section { margin-top: 3.5rem; }
+.section-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1rem;
+  border-top: 1px solid var(--line-strong);
+  padding-top: 1rem; margin-bottom: 1.5rem;
+}
+.section-head .etykieta { flex-shrink: 0; }
+
+/* ---------- nagłówek strony ---------- */
+.site-header {
+  border-bottom: 1px solid var(--line-strong);
+  background: var(--bg);
+  position: sticky; top: 0; z-index: 20;
+}
+.statusbar {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.05em;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--accent);
+  background: var(--bg-sunk);
+}
+.statusbar[hidden] { display: none; }
+.masthead {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; min-height: calc(var(--header-h) - 1.6rem);
+  padding-block: 0.6rem; flex-wrap: wrap;
+}
+.brand {
+  display: flex; align-items: center; gap: 0.7rem;
+  text-decoration: none; color: var(--fg);
+}
+.brand img { width: 2.2rem; height: auto; }
+.brand-name { font-weight: 600; font-size: var(--step-1); letter-spacing: 0.02em; }
+.site-nav ul {
+  list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem 1.1rem;
+  margin: 0; padding: 0;
+}
+.site-nav a {
+  text-decoration: none; color: var(--fg-soft);
+  font-size: var(--step-0); padding: 0.35rem 0.1rem;
+}
+.site-nav a:hover { color: var(--accent); }
+.site-nav a[aria-current="page"] {
+  color: var(--accent);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+/* ---------- przyciski ---------- */
+.btn {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--step-0); font-weight: 600;
+  padding: 0.6rem 1.3rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  text-decoration: none; cursor: pointer;
+}
+.btn-solid { background: var(--accent); color: var(--bg); }
+.btn-solid:hover { background: var(--accent-strong); border-color: var(--accent-strong); color: var(--bg); }
+.btn-outline { background: transparent; color: var(--accent); }
+.btn-outline:hover { background: var(--accent); color: var(--bg); }
+
+/* ---------- hero ---------- */
+.hero { padding-block: 3.2rem 1rem; }
+.hero .etykieta { display: block; margin-bottom: 1rem; }
+.hero h1 { max-width: 24ch; }
+.hero .lede {
+  font-size: var(--step-1); line-height: 1.45;
+  max-width: 52ch; color: var(--fg-soft);
+  margin: 1rem 0 1.8rem;
+}
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+.hero-note { color: var(--muted); font-size: var(--step-0); margin-top: 0.9rem; }
+.licznik {
+  font-family: var(--font-mono);
+  font-size: var(--step-1); color: var(--accent);
+}
+.licznik[hidden] { display: none; }
+
+/* ---------- wiersze „dlaczego warto" (numeracja spec, nie karty z ikonami) ---------- */
+.spec-list { list-style: none; margin: 0; padding: 0; max-width: 60rem; }
+.spec-list li {
+  display: grid; grid-template-columns: 4rem 1fr; gap: 1rem;
+  padding: 1.2rem 0; border-top: 1px solid var(--line);
+}
+.spec-list li:last-child { border-bottom: 1px solid var(--line); }
+.spec-num {
+  font-family: var(--font-mono); font-size: var(--step-1);
+  color: var(--accent);
+}
+.spec-list h3 { font-size: var(--step-1); margin-bottom: 0.3rem; }
+.spec-list p { margin: 0; color: var(--fg-soft); max-width: 60ch; }
+
+/* ---------- fakty kluczowe (48h / zespoły / kto) ---------- */
+.fakty {
+  display: flex; flex-wrap: wrap; gap: 2rem 3.5rem;
+  border: 1px solid var(--line-strong); border-radius: var(--radius);
+  padding: 1.4rem 1.6rem; margin-top: 2rem; background: var(--bg);
+}
+.fakta div { min-width: 8rem; }
+.fakta-liczba {
+  font-size: var(--step-3); font-weight: 600;
+  font-variant-numeric: tabular-nums; line-height: 1.1;
+}
+.fakta-etykieta {
+  font-family: var(--font-mono); font-size: var(--step--1);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); margin-top: 0.25rem;
+}
+
+/* ---------- edycja: nagłówek, statystyki, podium ---------- */
+.edycja-head { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; align-items: end; }
+.edycja-meta { color: var(--muted); font-size: var(--step-0); }
+.zadanie {
+  border-left: 3px solid var(--accent);
+  background: var(--bg-sunk);
+  padding: 1rem 1.3rem; border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: var(--step-1); line-height: 1.45;
+  max-width: 56ch;
+}
+.zadanie-etykieta { margin-bottom: 0.4rem; display: block; }
+.staty { display: flex; flex-wrap: wrap; gap: 2.5rem; margin: 1.6rem 0; }
+.stat-liczba {
+  font-size: var(--step-3); font-weight: 600; line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-etykieta {
+  font-family: var(--font-mono); font-size: var(--step--1);
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+}
+.podium { list-style: none; margin: 0; padding: 0; max-width: 44rem; }
+.podium li {
+  display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem;
+  padding: 1rem 0; border-top: 1px solid var(--line);
+}
+.podium li:last-child { border-bottom: 1px solid var(--line); }
+.medal {
+  width: 2.4rem; height: 2.4rem; border-radius: 50%;
+  border: 2px solid currentColor;
+  display: grid; place-items: center;
+  font-family: var(--font-mono); font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.medal-1 { color: var(--gold); }
+.medal-2 { color: var(--silver); }
+.medal-3 { color: var(--bronze); }
+.druzyna { font-weight: 600; }
+.czlonkowie { color: var(--fg-soft); font-size: var(--step-0); margin-top: 0.15rem; }
+.wyroznienia ol { color: var(--fg-soft); padding-left: 1.2rem; }
+.wyroznienia b { color: var(--fg); }
+
+/* ---------- media edycji ---------- */
+.media-edycji { max-width: 34rem; }
+.media-edycji img { border: 1px solid var(--line-strong); border-radius: var(--radius); }
+.media-edycji figcaption {
+  color: var(--muted); font-size: var(--step--1);
+  font-family: var(--font-mono); letter-spacing: 0.03em;
+  margin-top: 0.5rem;
+}
+audio { width: 100%; max-width: 34rem; }
+
+/* ---------- archiwum: karty edycji ---------- */
+.archiwum { list-style: none; margin: 0; padding: 0; max-width: 60rem; }
+.archiwum > li { border-top: 1px solid var(--line); }
+.archiwum > li:last-child { border-bottom: 1px solid var(--line); }
+.archiwum a.karta {
+  display: grid; grid-template-columns: 5.5rem 1fr auto; gap: 1.2rem;
+  align-items: baseline;
+  padding: 1.3rem 0.3rem; text-decoration: none; color: var(--fg);
+}
+.archiwum a.karta:hover { background: var(--bg-sunk); }
+.karta .rok {
+  font-family: var(--font-mono); font-size: var(--step--1);
+  color: var(--muted);
+}
+.karta .tytul { font-weight: 600; font-size: var(--step-1); }
+.karta .temat { display: block; color: var(--fg-soft); font-weight: 400; font-size: var(--step-0); margin-top: 0.2rem; max-width: 60ch; }
+.karta .strzalka { color: var(--accent); }
+
+/* ---------- tabela historii partnerów ---------- */
+/* wąskie ekrany: tabela przewija się wewnątrz wrappera (standardowy
+   wzorzec responsywnych tabel), strona nie rozpycha się poziomo
+   (finding recenzji UX P1, 2026-11-02) */
+.tabela-przewijanie { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.historia {
+  width: 100%; max-width: 60rem; min-width: 34rem;
+  border-collapse: collapse;
+}
+.historia caption {
+  text-align: left; color: var(--muted);
+  font-size: var(--step--1); font-family: var(--font-mono);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding-bottom: 0.6rem;
+}
+.historia th {
+  text-align: left; font-size: var(--step--1); font-weight: 600;
+  font-family: var(--font-mono); letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--muted);
+  border-bottom: 1px solid var(--line-strong);
+  padding: 0.5rem 0.8rem 0.5rem 0;
+}
+.historia td {
+  padding: 0.75rem 0.8rem 0.75rem 0; vertical-align: top;
+  border-bottom: 1px solid var(--line); font-size: var(--step-0);
+}
+.historia td:first-child { font-family: var(--font-mono); color: var(--accent); font-variant-numeric: tabular-nums; }
+.historia td:nth-child(2) { font-weight: 600; }
+/* nowrap (etykieta edycji, partner) tylko tam, gdzie się mieści —
+   na wąskich ekranach komórki zawijają (min-content tabeli nie rozpycha strony) */
+@media (min-width: 641px) {
+  .historia td:first-child, .historia td:nth-child(2) { white-space: nowrap; }
+}
+
+/* ---------- listy korzyści (współpraca) ---------- */
+.korzyści { padding-left: 1.2rem; color: var(--fg-soft); max-width: 62ch; }
+.korzyści li { margin-bottom: 0.45rem; }
+.korzyści li::marker { color: var(--accent); }
+
+/* ---------- dokumenty (regulaminy) ---------- */
+.dokument {
+  border: 1px solid var(--line-strong); border-radius: var(--radius);
+  padding: 1.2rem 1.4rem; max-width: 40rem; margin-bottom: 1.2rem;
+}
+.dokument .typ {
+  font-family: var(--font-mono); font-size: var(--step--1);
+  color: var(--muted); letter-spacing: 0.05em;
+}
+.dokument h3 { margin: 0.4rem 0 0.6rem; }
+.dokument p { color: var(--fg-soft); font-size: var(--step-0); margin-bottom: 0.6rem; }
+.dokument .rozmiar { color: var(--muted); font-family: var(--font-mono); font-size: var(--step--1); }
+
+/* ---------- artykuły zewnętrzne (inni o nas) ---------- */
+.zrodla { list-style: none; margin: 0; padding: 0; max-width: 60rem; }
+.zrodla > li { border-top: 1px solid var(--line); }
+.zrodla > li:last-child { border-bottom: 1px solid var(--line); }
+.zrodla a {
+  display: block; padding: 1.2rem 0.3rem;
+  text-decoration: none; color: var(--fg);
+}
+.zrodla a:hover { background: var(--bg-sunk); }
+.zrodla .serwis {
+  font-family: var(--font-mono); font-size: var(--step--1);
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+  display: block; margin-bottom: 0.3rem;
+}
+.zrodla .tytul { font-weight: 600; font-size: var(--step-0); }
+
+/* ---------- formularz kontaktowy / adres ---------- */
+.kontakt-blok { max-width: 34rem; }
+.adres { color: var(--fg-soft); font-style: normal; line-height: 1.6; }
+.adres b { color: var(--fg); }
+
+/* ---------- stopka ---------- */
+.site-footer {
+  border-top: 1px solid var(--line-strong);
+  padding: 2.5rem 0 3rem; margin-top: 4rem;
+  background: var(--bg);
+}
+.stopka-grid {
+  display: flex; flex-wrap: wrap; gap: 2.5rem 4rem;
+  justify-content: space-between;
+}
+.stopka-grid h2 { font-size: var(--step-0); margin-bottom: 0.6rem; }
+.stopka-grid ul { list-style: none; margin: 0; padding: 0; }
+.stopka-grid li { margin-bottom: 0.4rem; color: var(--fg-soft); font-size: var(--step-0); }
+.stopka-grid a { text-decoration: none; }
+.stopka-grid a:hover { text-decoration: underline; }
+.stopka-loga { display: flex; gap: 1.2rem; align-items: center; }
+.stopka-loga img { height: 2.6rem; width: auto; }
+.copyright {
+  margin-top: 2.2rem; color: var(--muted);
+  font-size: var(--step--1); font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+
+/* ---------- nawigacja okruszkowa ---------- */
+.okruszki {
+  font-size: var(--step--1); font-family: var(--font-mono);
+  color: var(--muted); padding-top: 1.4rem;
+}
+.okruszki a { color: var(--muted); }
+.okruszki a:hover { color: var(--accent); }
+
+/* ---------- responsywność ---------- */
+@media (max-width: 640px) {
+  body { font-size: 1rem; }
+  h1 { font-size: var(--step-3); }
+  .hero { padding-block: 2.2rem 0.5rem; }
+  .spec-list li { grid-template-columns: 3rem 1fr; }
+  .archiwum a.karta { grid-template-columns: 1fr; gap: 0.3rem; }
+  .staty { gap: 1.6rem; }
+  .stopka-loga img { height: 2rem; }
+}
+@media (min-width: 641px) {
+  body { font-size: var(--step-lf); }
+}
+
+/* ---------- ruch ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- fallback fontów (swap bez CLS; test fonts-blocked w VERIFY) ---------- */
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("./fonts/plex-sans-400.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+  size-adjust: 104%; ascent-override: 100%; descent-override: 26%; line-gap-override: 0%;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("./fonts/plex-sans-600.woff2") format("woff2");
+  font-weight: 600; font-style: normal; font-display: swap;
+  size-adjust: 104%; ascent-override: 100%; descent-override: 26%; line-gap-override: 0%;
+}

@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generator edycji — Mechaton (narzędzie lokalne)</title>
+<style>
+  /* Narzędzie lokalne — celowo samodzielne, bez zależności od styles.css serwisu */
+  body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; background: #faf8f6; color: #171214; line-height: 1.5; }
+  main { max-width: 52rem; margin: 0 auto; padding: 1.5rem; }
+  h1 { font-size: 1.5rem; } h2 { font-size: 1.1rem; margin-top: 2rem; border-top: 1px solid #ddd5cf; padding-top: 1rem; }
+  .uwaga { background: #f1ece7; border-left: 3px solid #630102; padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.95rem; }
+  fieldset { border: 1px solid #ddd5cf; border-radius: 3px; margin: 1rem 0; padding: 1rem; }
+  label { display: block; font-size: 0.85rem; margin-top: 0.7rem; }
+  input[type=text], input[type=number], textarea { width: 100%; padding: 0.4rem; font: inherit; border: 1px solid #c9beb6; border-radius: 3px; }
+  textarea { min-height: 4rem; }
+  .rząd { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+  button { font: inherit; font-weight: 600; background: #630102; color: #faf8f6; border: 0; border-radius: 3px; padding: 0.6rem 1.3rem; cursor: pointer; margin-top: 1rem; }
+  button:hover { background: #4c0102; }
+  button.do-pobrania { background: #f1ece7; color: #630102; border: 1px solid #630102; margin-right: 0.5rem; }
+  .wynik { border: 1px solid #c9beb6; border-radius: 3px; padding: 1rem; margin: 1rem 0; background: #fff; }
+  .wynik h3 { margin: 0 0 0.5rem; }
+  .wynik pre { max-height: 10rem; overflow: auto; background: #f1ece7; padding: 0.6rem; font-size: 0.75rem; white-space: pre-wrap; }
+  .blad { color: #630102; font-weight: 600; }
+  .ok { color: #1d6b30; font-weight: 600; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Generator edycji Mechaton</h1>
+  <div class="uwaga">
+    <strong>Narzędzie lokalne.</strong> Otwieraj ten plik z folderu serwisu (obok folderu
+    <code>js/</code>). Wypełnij formularz, kliknij „Generuj pliki”, pobierz trzy pliki
+    i wgraj je na serwer zgodnie z <strong>CHECKLISTA.md — procedura 2</strong>.
+    Historia edycji jest pamiętana w tej przeglądarce.
+  </div>
+  <p id="status-generatora"></p>
+
+  <h2>Dane edycji</h2>
+  <fieldset>
+    <div class="rząd">
+      <div><label for="f-etykieta">Etykieta edycji (np. ED-05)</label><input id="f-etykieta" type="text" required></div>
+      <div><label for="f-numer">Numer rzymski (np. V)</label><input id="f-numer" type="text" required></div>
+      <div><label for="f-firma">Firma partnera (np. MBL)</label><input id="f-firma" type="text" required></div>
+      <div><label for="f-rok">Rok (np. 2026)</label><input id="f-rok" type="text" required></div>
+      <div><label for="f-daty">Daty (np. 18–20 listopada 2026)</label><input id="f-daty" type="text" required></div>
+      <div><label for="f-miejsce">Miejsce (opcjonalnie; domyślnie kampus PŁ, Łódź)</label><input id="f-miejsce" type="text"></div>
+      <div><label for="f-zespolow">Liczba zespołów</label><input id="f-zespolow" type="number" min="1" required></div>
+      <div><label for="f-uczestnikow">Liczba uczestników</label><input id="f-uczestnikow" type="number" min="1" required></div>
+    </div>
+    <label for="f-temat">Temat zadania konkursowego (dokładnie jak od firmy)</label>
+    <textarea id="f-temat" required></textarea>
+    <label for="f-partnerlink">Link do strony partnera (opcjonalnie)</label>
+    <input id="f-partnerlink" type="text">
+  </fieldset>
+
+  <h2>Wyniki</h2>
+  <fieldset>
+    <div class="rząd">
+      <div><label for="f-d1">1. miejsce — nazwa drużyny (pusta = brak nazwy)</label><input id="f-d1" type="text"></div>
+      <div><label for="f-c1">1. miejsce — członkowie (oddzieleni przecinkami)</label><textarea id="f-c1"></textarea></div>
+      <div><label for="f-d2">2. miejsce — nazwa drużyny</label><input id="f-d2" type="text"></div>
+      <div><label for="f-c2">2. miejsce — członkowie</label><textarea id="f-c2"></textarea></div>
+      <div><label for="f-d3">3. miejsce — nazwa drużyny</label><input id="f-d3" type="text"></div>
+      <div><label for="f-c3">3. miejsce — członkowie</label><textarea id="f-c3"></textarea></div>
+    </div>
+    <label for="f-wyroznienia">Wyróżnienia — jeden wiersz na zespół, format: nazwa | członkowie</label>
+    <textarea id="f-wyroznienia" placeholder="SIMP | Jan Kowalski, Anna Nowak"></textarea>
+  </fieldset>
+
+  <h2>Materiały i linki</h2>
+  <fieldset>
+    <div class="rząd">
+      <div><label for="f-grafika">Grafika edycji — plik (np. media/edycje/ed-05-mbl.jpg)</label><input id="f-grafika" type="text"></div>
+      <div><label for="f-grafikaopis">Grafika — podpis</label><input id="f-grafikaopis" type="text"></div>
+      <div><label for="f-audio">Audycja Radia ŻAK — plik (np. media/audio/... .mp3)</label><input id="f-audio" type="text"></div>
+      <div><label for="f-audioopis">Audycja — podpis</label><input id="f-audioopis" type="text"></div>
+    </div>
+    <div class="rząd">
+      <div><label for="f-zulink">Relacja w „Życiu Uczelni” — link</label><input id="f-zulink" type="text"></div>
+      <div><label for="f-zutytul">Relacja — tytuł artykułu</label><input id="f-zutytul" type="text"></div>
+    </div>
+  </fieldset>
+
+  <button id="b-generuj" type="button">Generuj pliki</button>
+  <p id="blad" class="blad"></p>
+
+  <div id="wyniki"></div>
+</main>
+
+<script src="./js/szablon-edycji.js"></script>
+<script>
+(function () {
+  "use strict";
+  var KLUCZ_MANIFEST = "mechaton-generator-manifest-v1";
+  var KLUCZ_FORM = "mechaton-generator-form-v1";
+
+  var status = document.getElementById("status-generatora");
+  if (typeof SZABLON_EDYCJI === "undefined") {
+    status.innerHTML = '<span class="blad">Nie wczytał się szablon (js/szablon-edycji.js). Otwórz ten plik z folderu serwisu — ma leżeć obok folderu js/.</span>';
+    document.getElementById("b-generuj").disabled = true;
+    return;
+  }
+
+  /* ziarno manifestu — cztery pierwsze edycje (spójne z danymi repozytorium) */
+  var ZIARNO = [
+    { etykieta: "ED-04", numer: "IV", firma: "HITACHI", rok: "2025", plik: "ED-04.html", daty: "19–21 listopada 2025", temat: "Zbiornik transformatora wymyślony na nowo", zespolow: 16, uczestnikow: 75 },
+    { etykieta: "ED-03", numer: "III", firma: "COMMON S.A.", rok: "2024", plik: "ED-03.html", daty: "11–13 grudnia 2024", temat: "Projekt 3D zespołu smarowania gazomierza turbinowego CGT-02", zespolow: 15, uczestnikow: 69 },
+    { etykieta: "ED-02", numer: "II", firma: "SECO/WARWICK", rok: "2023", plik: "ED-02.html", daty: "22–24 listopada 2023", temat: "Koncepcja napędu pionowego dwukomorowego pieca próżniowego CMe 9912 z wanną olejową", zespolow: 15, uczestnikow: 74 },
+    { etykieta: "ED-01", numer: "I", firma: "VEOLIA", rok: "2023", plik: "ED-01.html", daty: "18–20 stycznia 2023", temat: "Projekt odzysku ciepła z zakładu przemysłowego do sieci wysokoparametrowej DN800", zespolow: 11, uczestnikow: 50 }
+  ];
+
+  function wczytajManifest() {
+    try {
+      var surowe = localStorage.getItem(KLUCZ_MANIFEST);
+      if (surowe) return JSON.parse(surowe);
+    } catch (e) { /* brak/popsute localStorage → ziarno */ }
+    return ZIARNO.slice();
+  }
+  function zapiszManifest(lista) {
+    try { localStorage.setItem(KLUCZ_MANIFEST, JSON.stringify(lista)); } catch (e) { /* prywatny tryb — pomijamy */ }
+  }
+  function zapiszFormularz() {
+    var dane = {};
+    pola().forEach(function (id) {
+      dane[id] = document.getElementById(id).value;
+    });
+    try { localStorage.setItem(KLUCZ_FORM, JSON.stringify(dane)); } catch (e) { /* pomijamy */ }
+  }
+  function odtworzFormularz() {
+    try {
+      var dane = JSON.parse(localStorage.getItem(KLUCZ_FORM) || "null");
+      if (!dane) return;
+      pola().forEach(function (id) {
+        if (typeof dane[id] === "string" && dane[id] !== "") document.getElementById(id).value = dane[id];
+      });
+    } catch (e) { /* pomijamy */ }
+  }
+  function pola() {
+    return Array.prototype.slice.call(document.querySelectorAll("input, textarea"))
+      .filter(function (el) { return el.id && el.id.indexOf("f-") === 0; })
+      .map(function (el) { return el.id; });
+  }
+
+  function tekst(id) { return document.getElementById(id).value.trim(); }
+
+  /* normalizacja etykiety → bezpieczna nazwa pliku:
+     "ED 05" → ED-05, "V" → ED-V, "ed05" → ED-05; bez spacji i znaków specjalnych */
+  function normalizujEtykiete(surowa) {
+    var s = String(surowa || "").toUpperCase().replace(/[^A-Z0-9\-]/g, "-")
+      .replace(/-+/g, "-").replace(/^-|-$/g, "");
+    if (!/^ED-/.test(s)) s = "ED-" + s;
+    return s;
+  }
+  function plikZEtykiety(etykieta) { return etykieta + ".html"; }
+
+  /* sprawdza tylko niepustość — NIE escapuje (wyjście idzie do textContent/pre) */
+  function pusty(s) { return String(s == null ? "" : s); }
+
+  document.getElementById("b-generuj").addEventListener("click", function () {
+    var blad = document.getElementById("blad");
+    blad.textContent = "";
+    var wyniki = document.getElementById("wyniki");
+    wyniki.innerHTML = "";
+
+    var braki = [];
+    if (!tekst("f-etykieta")) braki.push("etykieta edycji");
+    if (!tekst("f-numer")) braki.push("numer rzymski");
+    if (!tekst("f-firma")) braki.push("firma");
+    if (!tekst("f-rok")) braki.push("rok");
+    if (!tekst("f-daty")) braki.push("daty");
+    if (!tekst("f-temat")) braki.push("temat zadania");
+    if (!tekst("f-zespolow")) braki.push("liczba zespołów");
+    if (!tekst("f-uczestnikow")) braki.push("liczba uczestników");
+    if (!tekst("f-c1")) braki.push("członkowie drużyny z 1. miejsca");
+    if (braki.length) {
+      blad.textContent = "Uzupełnij pola: " + braki.join(", ") + ".";
+      return;
+    }
+
+    var etykieta = normalizujEtykiete(tekst("f-etykieta"));
+    var plik = plikZEtykiety(etykieta);
+
+    /* wyróżnienia: "nazwa | członkowie" w wierszach */
+    var wyroznienia = tekst("f-wyroznienia").split("\n").map(function (linia) {
+      var czesci = linia.split("|");
+      if (!pusty(czesci[0] || "").trim()) return null;
+      return { druzyna: (czesci[0] || "").trim(), czlonkowie: (czesci[1] || "").trim() };
+    }).filter(Boolean);
+
+    var grafika = tekst("f-grafika") ? { plik: tekst("f-grafika"), opis: tekst("f-grafikaopis") } : null;
+    var audio = tekst("f-audio") ? { plik: tekst("f-audio"), opis: tekst("f-audioopis") } : null;
+
+    var edycja = {
+      etykieta: etykieta,
+      numer: tekst("f-numer"),
+      firma: tekst("f-firma"),
+      rok: tekst("f-rok"),
+      plik: plik,
+      daty: tekst("f-daty"),
+      miejsce: tekst("f-miejsce"),
+      temat: tekst("f-temat"),
+      zespolow: Number(tekst("f-zespolow")) || 0,
+      uczestnikow: Number(tekst("f-uczestnikow")) || 0,
+      partnerLink: tekst("f-partnerlink"),
+      grafika: grafika,
+      audio: audio,
+      zuLink: tekst("f-zulink"),
+      zuTytul: tekst("f-zutytul"),
+      zwyciezcy: [
+        { miejsce: 1, druzyna: tekst("f-d1"), czlonkowie: tekst("f-c1") },
+        { miejsce: 2, druzyna: tekst("f-d2"), czlonkowie: tekst("f-c2") },
+        { miejsce: 3, druzyna: tekst("f-d3"), czlonkowie: tekst("f-c3") }
+      ].filter(function (z) { return z.czlonkowie || z.druzyna; }),
+      wyroznienia: wyroznienia
+    };
+
+    /* manifest: nowa edycja na górze (odradzamy duplikat etykiety) */
+    var lista = wczytajManifest().filter(function (e) { return e.etykieta !== etykieta; });
+    lista.unshift({
+      etykieta: etykieta, numer: edycja.numer, firma: edycja.firma, rok: edycja.rok,
+      plik: plik, daty: edycja.daty, temat: edycja.temat,
+      zespolow: edycja.zespolow, uczestnikow: edycja.uczestnikow
+    });
+
+    var starsza = lista[1] || null; /* pierwsza starsza = „poprz” */
+    var htmlStrony = SZABLON_EDYCJI.strona(edycja, starsza, null);
+    var htmlArchiwum = SZABLON_EDYCJI.archiwum(lista);
+    var jsManifest = SZABLON_EDYCJI.manifest(lista);
+
+    zapiszManifest(lista);
+    zapiszFormularz();
+
+    var opisy = [
+      { naglowek: "1. Strona edycji — zapisz jako " + plik + " i wgraj do folderu edycje/", tresc: htmlStrony, nazwa: plik },
+      { naglowek: "2. Indeks archiwum — zapisz jako index.html i wgraj do folderu edycje/ (zastąp stary)", tresc: htmlArchiwum, nazwa: "index.html" },
+      { naglowek: "3. Manifest — zapisz jako edycje.js i wgraj do folderu dane/ (zastąp stary)", tresc: jsManifest, nazwa: "edycje.js" }
+    ];
+
+    opisy.forEach(function (o) {
+      var div = document.createElement("div");
+      div.className = "wynik";
+      var h = document.createElement("h3");
+      h.textContent = o.naglowek;
+      var pre = document.createElement("pre");
+      pre.textContent = o.tresc;
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "do-pobrania";
+      btn.textContent = "Pobierz „" + o.nazwa + "”";
+      btn.addEventListener("click", function () {
+        /* BOM, żeby Notatnik na Windows poprawnie otwierał polskie znaki */
+        var blob = new Blob(["\ufeff" + o.tresc], { type: "text/plain;charset=utf-8" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = o.nazwa;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+      });
+      div.appendChild(h);
+      div.appendChild(pre);
+      div.appendChild(btn);
+      wyniki.appendChild(div);
+    });
+
+    var podsumowanie = document.createElement("p");
+    podsumowanie.className = "ok";
+    podsumowanie.textContent = "Wygenerowano. Wgraj trzy pliki wg CHECKLISTY (procedura 2), a potem sprawdź stronę przez Ctrl+F5.";
+    wyniki.insertBefore(podsumowanie, wyniki.firstChild);
+  });
+
+  odtworzFormularz();
+  status.textContent = "Szablon wczytany. W pamięci tej przeglądarki jest " +
+    wczytajManifest().length + " edycji.";
+})();
+</script>
+</body>
+</html>
